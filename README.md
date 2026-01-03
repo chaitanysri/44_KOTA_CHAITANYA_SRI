@@ -1,4 +1,5 @@
-**Mental Health Risk Screening Chatbot using Generative AI**
+**Mental Health Risk Screening Chatbot using Generative AI**<br>
+
 **Problem Statement**
 Mental health concerns such as stress, anxiety, and depressive symptoms are increasingly prevalent. However, early identification of emotional distress is often delayed due to stigma, lack of awareness, and limited access to simple and private screening tools. Many individuals lack an accessible, non-judgmental way to reflect on their mental well-being or understand potential risk levels at an early stage.
 The problem addressed in this project is the absence of an ethical, accessible, and structured mental health risk screening system that can support early awareness without attempting medical diagnosis or treatment.
