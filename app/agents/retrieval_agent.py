@@ -1,16 +1,18 @@
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores import Chroma
+from langchain_community.vectorstores import FAISS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.embeddings import HuggingFaceEmbeddings
 
 
 class RetrievalAgent:
     """
-    Retrieves relevant mental health support content using ChromaDB.
+    FAISS + HuggingFace embeddings (offline, no API key).
     """
 
-    def __init__(self, persist_dir="chroma_db"):
-        self.embeddings = OpenAIEmbeddings()
-        self.persist_dir = persist_dir
+    def __init__(self):
+        self.embeddings = HuggingFaceEmbeddings(
+            model_name="sentence-transformers/all-MiniLM-L6-v2"
+        )
+        self.vectordb = None
 
     def build_index(self, documents):
         splitter = RecursiveCharacterTextSplitter(
@@ -19,16 +21,11 @@ class RetrievalAgent:
         )
         chunks = splitter.split_text("\n".join(documents))
 
-        vectordb = Chroma.from_texts(
+        self.vectordb = FAISS.from_texts(
             chunks,
-            embedding=self.embeddings,
-            persist_directory=self.persist_dir
+            embedding=self.embeddings
         )
-        vectordb.persist()
 
     def retrieve(self, query: str):
-        vectordb = Chroma(
-            persist_directory=self.persist_dir,
-            embedding_function=self.embeddings
-        )
-        return vectordb.similarity_search(query, k=2)
+        return self.vectordb.similarity_search(query, k=2)
+
